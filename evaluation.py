@@ -11,7 +11,6 @@ piece_type_to_value = {
 }
 
 PAWN_WEAKNESS_FACTOR = 50
-MOBILITY_FACTOR = 10
 
 def evaluate_shannon(board: chess.Board) -> float:
     """
@@ -47,8 +46,8 @@ def count_isolated_pawns(pawn_squares: chess.SquareSet) -> int:
     files = [chess.square_file(square) for square in pawn_squares]
     file_set = set(files)
     count = 0
-    for file in files:
-        if ((file - 1) and (file + 1)) not in file_set:
+    for f in files:
+        if (f - 1) not in file_set and (f + 1) not in file_set:
             count += 1
     return count
 
