@@ -1,6 +1,7 @@
 import chess
 import time
 from evaluation import evaluate
+from typing import Literal
 
 
 def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
@@ -13,8 +14,10 @@ def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
         chess.Move: optimal move found
     """
     t0 = time.time()
-    color = 1 if board.turn == chess.WHITE else -1
-    move = negamax_root(board, depth, -float("inf"), float("inf"), color)
+    if board.turn == chess.WHITE:
+        move = negamax_root(board, depth, -float("inf"), float("inf"), 1)
+    else:
+        move = negamax_root(board, depth, -float("inf"), float("inf"), -1)
     if debug:
         print(f"elapsed time: {(time.time() - t0):.2f} seconds")
     return move
@@ -23,7 +26,7 @@ def negamax_root(board: chess.Board,
                  depth: int,
                  alpha: float,
                  beta: float,
-                 color: bool,
+                 color: Literal[1, -1],
 ) -> chess.Move:
     """
     Root function for negamax algorithm
@@ -47,7 +50,7 @@ def negamax(board: chess.Board,
             depth: int, 
             alpha: float, 
             beta: float, 
-            color: bool,
+            color: Literal[1, -1],
 ) -> float:
     """
     Implementation of negamax algorithm with alpha-beta pruning

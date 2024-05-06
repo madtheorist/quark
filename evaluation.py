@@ -61,9 +61,10 @@ def count_doubled_pawns(pawn_squares: chess.SquareSet) -> int:
     files = Counter([chess.square_file(square) for square in pawn_squares])
     count = 0
     for f in files:
-        if files.get(f) == 2:
+        pawns_on_file = files.get(f, 0)
+        if pawns_on_file == 2:
             count += 1
-        elif files.get(f) > 2:
+        elif pawns_on_file > 2:
             count += 2
     return count
     
