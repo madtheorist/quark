@@ -1,6 +1,6 @@
 # patzer-bot
 
-A small side project to build a basic chess engine in Python, leveraging the excellent python-chess library.
+This is a small side project to build a chess engine in Python, leveraging the excellent python-chess library.
 
 Installation:
 

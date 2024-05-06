@@ -1,6 +1,6 @@
 import chess
 import time
-from evaluation import evaluate_shannon
+from evaluation import evaluate
 
 
 def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
@@ -13,14 +13,11 @@ def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
         chess.Move: optimal move found
     """
     t0 = time.time()
-    if board.turn == chess.WHITE:
-        move = negamax_root(board, depth, -float("inf"), float("inf"), 1)
-    else:
-        move = negamax_root(board, depth, -float("inf"), float("inf"), -1)
+    color = 1 if board.turn == chess.WHITE else -1
+    move = negamax_root(board, depth, -float("inf"), float("inf"), color)
     if debug:
         print(f"elapsed time: {(time.time() - t0):.2f} seconds")
     return move
-
 
 def negamax_root(board: chess.Board, 
                  depth: int,
@@ -60,7 +57,7 @@ def negamax(board: chess.Board,
         float: absolute value of evaluation of position (>=0)
     """
     if depth == 0:
-        return color * evaluate_shannon(board)
+        return color * evaluate(board)
     
     value = -float("inf")
     for move in board.legal_moves:

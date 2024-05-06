@@ -1,21 +1,16 @@
 import chess
 from collections import Counter
+from config import piece_type_to_value, PAWN_WEAKNESS_FACTOR, MATE_EVAL
 
-piece_type_to_value = {
-    chess.PAWN: 100,
-    chess.ROOK: 500,
-    chess.KNIGHT: 320,
-    chess.BISHOP: 330,
-    chess.QUEEN: 900,
-    chess.KING: 20000
-}
+# ideas
+# piece value tables for opening and endgame: https://www.chessprogramming.org/Tapered_Eval
+# tapered evaluation: https://www.chessprogramming.org/Tapered_Eval
 
-PAWN_WEAKNESS_FACTOR = 50
-
-def evaluate_shannon(board: chess.Board) -> float:
+def evaluate(board: chess.Board) -> float:
     """
     Implementation of Shannon's crude evaluation function as outlined in this 1949 paper
     https://www.pi.infn.it/%7Ecarosi/chess/shannon.txt
+    combined with piece square tables and corrections for pawn weaknesses, etc.
     
     Parameters:
         board (chess.Board): chess.Board object containing current state of the board
@@ -23,8 +18,16 @@ def evaluate_shannon(board: chess.Board) -> float:
     Returns:
         float: the approximate centipawn evaluation of the position (+100 ~ 1 pawn in favour of white)
     """
-    eval = 0
+    # if game has ended
+    if outcome := board.outcome():
+        if outcome.winner == chess.WHITE: 
+            return MATE_EVAL # white checkmates
+        elif outcome.winner == chess.BLACK:
+            return -MATE_EVAL # black checkmates
+        else:
+            return 0 # game drawn
 
+    eval = 0
     # Sum the piece values
     for square in chess.SQUARES:
         if piece := board.piece_at(square):
