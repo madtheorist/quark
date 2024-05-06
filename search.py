@@ -22,11 +22,13 @@ def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
         print(f"elapsed time: {(time.time() - t0):.2f} seconds")
     return move
 
-def negamax_root(board: chess.Board, 
-                 depth: int,
-                 alpha: float,
-                 beta: float,
-                 color: Literal[1, -1],
+
+def negamax_root(
+    board: chess.Board,
+    depth: int,
+    alpha: float,
+    beta: float,
+    color: Literal[1, -1],
 ) -> chess.Move:
     """
     Root function for negamax algorithm
@@ -44,13 +46,14 @@ def negamax_root(board: chess.Board,
         if alpha > beta:
             break
     return best_move
-        
 
-def negamax(board: chess.Board, 
-            depth: int, 
-            alpha: float, 
-            beta: float, 
-            color: Literal[1, -1],
+
+def negamax(
+    board: chess.Board,
+    depth: int,
+    alpha: float,
+    beta: float,
+    color: Literal[1, -1],
 ) -> float:
     """
     Implementation of negamax algorithm with alpha-beta pruning
@@ -61,7 +64,7 @@ def negamax(board: chess.Board,
     """
     if depth == 0:
         return color * evaluate(board)
-    
+
     value = -float("inf")
     for move in board.legal_moves:
         board.push(move)
@@ -72,4 +75,3 @@ def negamax(board: chess.Board,
             return value
 
     return value
-

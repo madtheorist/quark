@@ -7,10 +7,10 @@ piece_type_to_value = {
     chess.KNIGHT: 320,
     chess.BISHOP: 330,
     chess.QUEEN: 900,
-    chess.KING: 20000
+    chess.KING: 20000,
 }
 
-# Correction factor for pawn weaknesses 
+# Correction factor for pawn weaknesses
 PAWN_WEAKNESS_FACTOR = 50
 MATE_EVAL = 1_000_000_000
 

@@ -6,12 +6,13 @@ from config import piece_type_to_value, PAWN_WEAKNESS_FACTOR, MATE_EVAL
 # piece value tables for opening and endgame: https://www.chessprogramming.org/Tapered_Eval
 # tapered evaluation: https://www.chessprogramming.org/Tapered_Eval
 
+
 def evaluate(board: chess.Board) -> float:
     """
     Implementation of Shannon's crude evaluation function as outlined in this 1949 paper
     https://www.pi.infn.it/%7Ecarosi/chess/shannon.txt
     combined with piece square tables and corrections for pawn weaknesses, etc.
-    
+
     Parameters:
         board (chess.Board): chess.Board object containing current state of the board
 
@@ -20,12 +21,12 @@ def evaluate(board: chess.Board) -> float:
     """
     # if game has ended
     if outcome := board.outcome():
-        if outcome.winner == chess.WHITE: 
-            return MATE_EVAL # white checkmates
+        if outcome.winner == chess.WHITE:
+            return MATE_EVAL  # white checkmates
         elif outcome.winner == chess.BLACK:
-            return -MATE_EVAL # black checkmates
+            return -MATE_EVAL  # black checkmates
         else:
-            return 0 # game drawn
+            return 0  # game drawn
 
     eval = 0
     # Sum the piece values
@@ -37,10 +38,15 @@ def evaluate(board: chess.Board) -> float:
     # Factor in isolated and doubled pawns
     white_pawns = board.pieces(chess.PAWN, chess.WHITE)
     black_pawns = board.pieces(chess.PAWN, chess.BLACK)
-    eval -= PAWN_WEAKNESS_FACTOR * (count_isolated_pawns(white_pawns) - count_isolated_pawns(black_pawns))
-    eval -= PAWN_WEAKNESS_FACTOR * (count_doubled_pawns(white_pawns) - count_doubled_pawns(black_pawns))
+    eval -= PAWN_WEAKNESS_FACTOR * (
+        count_isolated_pawns(white_pawns) - count_isolated_pawns(black_pawns)
+    )
+    eval -= PAWN_WEAKNESS_FACTOR * (
+        count_doubled_pawns(white_pawns) - count_doubled_pawns(black_pawns)
+    )
 
     return eval
+
 
 def count_isolated_pawns(pawn_squares: chess.SquareSet) -> int:
     """
@@ -53,6 +59,7 @@ def count_isolated_pawns(pawn_squares: chess.SquareSet) -> int:
         if (f - 1) not in file_set and (f + 1) not in file_set:
             count += 1
     return count
+
 
 def count_doubled_pawns(pawn_squares: chess.SquareSet) -> int:
     """
@@ -67,4 +74,3 @@ def count_doubled_pawns(pawn_squares: chess.SquareSet) -> int:
         elif pawns_on_file > 2:
             count += 2
     return count
-    
