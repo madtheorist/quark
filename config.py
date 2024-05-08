@@ -1,5 +1,8 @@
 import chess
 
+# Engine depth
+DEPTH = 3
+
 # Material value
 piece_type_to_value = {
     chess.PAWN: 100,
