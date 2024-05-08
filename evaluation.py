@@ -19,15 +19,6 @@ def evaluate(board: chess.Board) -> float:
     Returns:
         float: the approximate centipawn evaluation of the position (+100 ~ 1 pawn in favour of white)
     """
-    # if game has ended
-    if outcome := board.outcome():
-        if outcome.winner == chess.WHITE:
-            return MATE_EVAL  # white checkmates
-        elif outcome.winner == chess.BLACK:
-            return -MATE_EVAL  # black checkmates
-        else:
-            return 0  # game drawn
-
     eval = 0
     # Sum the piece values
     for square in chess.SQUARES:
