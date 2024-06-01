@@ -67,7 +67,7 @@ class Game:
             else:
                 self.display_board()
                 san = input(
-                    "Enter a valid chess move in standard algebraic notation, like d4, Nxe4, or e8=Q: "
+                    "Enter a valid chess move in standard algebraic notation, like d4, Nxe4, or e8=Q:\n"
                 )
                 try:
                     self.board.push_san(san)
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     try:
         print("Welcome to the quark bot UI. Press control-C to exit.")
-        user_color = input("Would you like to play as [w]hite or [b]lack?: ")
+        user_color = input("Would you like to play as [w]hite or [b]lack?\n")
 
         if user_color.lower() == "w":
             game = Game(board, user, bot)
@@ -98,4 +98,4 @@ if __name__ == "__main__":
         game.play()
 
     except KeyboardInterrupt:
-        print("Thanks for playing!")
+        print("Thanks for playing!\n")
