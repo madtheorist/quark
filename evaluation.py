@@ -32,7 +32,7 @@ def evaluate(board: chess.Board) -> float:
     factor_mg = (game_phase - GAME_PHASE_MIN_EG) / GAME_PHASE_RANGE
     factor_eg = 1 - factor_mg
 
-    eval = 0
+    eval: float = 0
     # Sum the piece values
     for square in chess.SQUARES:
         if piece := board.piece_at(square):
