@@ -33,7 +33,7 @@ To run tests with pytest, run
 pytest
 ```
 
-in the root directory.
+in the root directory. More complete tests to come; development is still ongoing.
 
 ## Play against the bot in the terminal
 
