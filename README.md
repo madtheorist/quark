@@ -21,10 +21,14 @@ pytest
 
 in the root directory.
 
-## Play against the engine
+## Play against the bot in the terminal
 
 You can play against the engine in the terminal by running
 
 ```
 python game.py
-``
+```
+
+## Play against the bot on Lichess
+
+Development in progress
