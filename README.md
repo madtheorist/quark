@@ -1,6 +1,7 @@
-![Unit tests and type checking](https://github.com/madtheorist/patzer-bot/actions/workflows/python-app.yml/badge.svg)
+![Unit tests](https://github.com/madtheorist/patzer-bot/actions/workflows/python-app.yml/badge.svg)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-# patzer-bot
+# Quark
 
 This is a small side project to build a chess engine in Python, leveraging the excellent python-chess library.
 
@@ -19,3 +20,11 @@ pytest
 ```
 
 in the root directory.
+
+## Play against the engine
+
+You can play against the engine in the terminal by running
+
+```
+python game.py
+``
