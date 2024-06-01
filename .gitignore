@@ -3,3 +3,6 @@ __pycache__
 .vscode
 .pytest_cache
 .mypy_cache
+build
+dist
+uci.spec

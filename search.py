@@ -2,6 +2,7 @@ import chess
 import time
 from evaluation import evaluate
 from typing import Literal
+from config import MATE_EVAL
 
 
 def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
@@ -62,6 +63,12 @@ def negamax(
     Returns
         float: absolute value of evaluation of position (>=0)
     """
+    if outcome := board.outcome():
+        if outcome.termination == chess.Termination.CHECKMATE:
+            return MATE_EVAL 
+        else:
+            return 0
+    
     if depth == 0:
         return color * evaluate(board)
 
