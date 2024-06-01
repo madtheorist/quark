@@ -3,9 +3,23 @@
 
 # Quark
 
-This is a small side project to build a chess engine in Python, leveraging the excellent python-chess library.
+This is a small side project to build a chess engine in Python, leveraging the excellent [python-chess](https://github.com/niklasf/python-chess) library by Niklas Fiekas. It is very much still a work in progress; I am a complete beginner to chess programming.
 
-Installation:
+Quark currently implements:
+- the [minimax search algorithm](https://en.wikipedia.org/wiki/Minimax) with [alpha-beta pruning](https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning);
+- a tapered evaluation function. 'Tapered' means that **two** sets of piece values and piece square tables are used, one set for the middlegame and the other set for the endgame, with the weight of each determined by linear interpolation.
+    - the piece square tables were obtained from those used by [rofChade](https://www.talkchess.com/forum3/viewtopic.php?f=2&t=68311&start=19);
+- evaluation corrections for pawn weaknesses, including isolated and doubled pawns;
+- a game UI that allows you to play against the bot in the terminal window.
+
+I drew inspiration from the following sources:
+- [Andoma](https://github.com/healeycodes/andoma/tree/main) by Andrew Healey. This was a simple and accessible introduction to chess programming.
+- [Blunder](https://github.com/deanmchris/blunder). I don't know Golang, but it's surprisingly readable coming from a Python background.
+- The [Chess Programming Wiki](https://www.chessprogramming.org/Main_Page). A treasure trove of information about chess programming. You can go down a lot of rabbit holes if you aren't careful.
+
+## Installation
+
+Create a virtual environment and install dependencies (commands may vary depending on OS).
 
 ```
 python -m venv .venv
@@ -23,7 +37,7 @@ in the root directory.
 
 ## Play against the bot in the terminal
 
-You can play against the engine in the terminal by running
+Once installed, you can play against Quark at the default depth (set in config.py) in the terminal by running
 
 ```
 python game.py
@@ -31,4 +45,4 @@ python game.py
 
 ## Play against the bot on Lichess
 
-Development in progress
+When Quark is in a more mature state I'll eventually hook it up to Lichess.
