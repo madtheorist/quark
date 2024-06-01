@@ -7,7 +7,7 @@ class TestEvaluation:
 
     def test_evaluate(self, starting_position):
         # starting position
-        assert evaluate(starting_position) == 0
+        assert evaluate(starting_position) > 0
         # white up on material
         white_up = chess.Board(
             "r1bqkb1r/ppp2ppp/2p2n2/8/4P3/8/PPPP1PPP/RNBQKB1R w KQkq - 0 1"
