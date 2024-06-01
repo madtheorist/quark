@@ -20,3 +20,19 @@ MATE_EVAL = 1_000_000_000
 # Piece square tables - a kind of 'second order correction' to material value depending on
 # where the piece is located, and the game stage
 # source: Rofchade - https://www.talkchess.com/forum3/viewtopic.php?f=2&t=68311&start=19
+
+fen_to_icon = {
+    "R": "♖",
+    "N": "♘",
+    "B": "♗",
+    "Q": "♕",
+    "K": "♔",
+    "P": "♙",
+    "r": "♜",
+    "n": "♞",
+    "b": "♝",
+    "q": "♛",
+    "k": "♚",
+    "p": "♟",
+    ".": "·",
+}
