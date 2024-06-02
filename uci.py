@@ -2,7 +2,7 @@ import sys
 import chess
 from typing import List
 from search import next_move
-from config import DEPTH
+from config import DEFAULT_DEPTH
 
 def main():
 
@@ -74,7 +74,7 @@ def go(board: chess.Board):
     Respond to the uci command "go"
     Given the board, return the best move
     """
-    best_move = next_move(board, DEPTH)
+    best_move = next_move(board, DEFAULT_DEPTH)
     print(f"bestmove {best_move}")
 
 if __name__ == "__main__":
