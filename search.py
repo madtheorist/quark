@@ -61,11 +61,14 @@ def negamax(
     https://en.wikipedia.org/wiki/Negamax
 
     Returns
-        float: absolute value of evaluation of position (>=0)
+        float: evaluation of position
     """
     if outcome := board.outcome():
         if outcome.termination == chess.Termination.CHECKMATE:
-            return MATE_EVAL 
+            if outcome.winner == chess.WHITE:
+                return color * MATE_EVAL
+            else:
+                return -color * MATE_EVAL
         else:
             return 0
     

@@ -89,6 +89,13 @@ if __name__ == "__main__":
     try:
         print("Welcome to the quark bot UI. Press control-C to exit.")
         user_color = input("Would you like to play as [w]hite or [b]lack?\n")
+        from_pos = input("Would you like to play from an existing position? [y/n]\n")
+        if from_pos.lower() == 'y':
+            fen = input("Please paste the FEN of the position you would like to play from: \n")
+            try:
+                board = chess.Board(fen)
+            except ValueError:
+                print("Invalid FEN. Using starting position instead.")
 
         if user_color.lower() == "w":
             game = Game(board, user, bot)
