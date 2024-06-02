@@ -17,3 +17,7 @@ class TestSearch:
     def test_mate_in_two_white(self):
         board = chess.Board("2Q4r/4prk1/ppp2p1p/8/2qP1R2/2P5/P5PP/5RK1 w - - 4 33")
         assert next_move(board, DEPTH) == chess.Move.from_uci("f4g4")
+
+    def test_mate_in_one_black(self):
+        board = chess.Board("rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq - 0 2")
+        assert next_move(board, DEPTH) == chess.Move.from_uci("d8h4")
