@@ -22,8 +22,12 @@ class Player:
     losses: int = 0
 
     @property
-    def record(self):
+    def record(self) -> str:
         return f"{self.wins}-{self.draws}-{self.losses} (W-D-L)"
+
+    @property
+    def score(self) -> str:
+        return f"{self.wins + 0.5 * self.draws:.1f}"
 
 
 class Game:
@@ -63,7 +67,9 @@ class Game:
 
             if player.is_bot:
                 move = next_move(self.board, DEPTH, debug=False)
+                san = board.san(move)
                 board.push(move)
+                print(f"Quark played the move {san}.")
             else:
                 self.display_board()
                 san = input(
@@ -78,31 +84,61 @@ class Game:
                 except AmbiguousMoveError:
                     print("Move is ambiguous. Please be more specific.")
 
-        print(f"\nResult: [w] {board.result()} [b]")
+        self._update_player_records()
+        print(f"\nResult: [w] {board.result()} [b]\n")
+        print(
+            f"""The current scores of the players are:\n{self.white_player.name} {self.white_player.score}-{self.black_player.score} {self.black_player.name}
+              """
+        )
+
+    def _update_player_records(self) -> None:
+        """
+        Update number of wins, losses, and draws of players.
+        """
+        outcome = self.board.outcome()
+        if outcome.winner == chess.WHITE:
+            self.white_player.wins += 1
+            self.black_player.losses += 1
+        elif outcome.winner == chess.BLACK:
+            self.white_player.losses += 1
+            self.black_player.wins += 1
+        else:
+            self.white_player.draws += 1
+            self.black_player.draws += 1
 
 
 if __name__ == "__main__":
 
-    board = chess.Board()
     user, bot = Player("User", False), Player("Quark", True)
+    in_play = True
 
-    try:
-        print("Welcome to the quark bot UI. Press control-C to exit.")
-        user_color = input("Would you like to play as [w]hite or [b]lack?\n")
-        from_pos = input("Would you like to play from an existing position? [y/n]\n")
-        if from_pos.lower() == 'y':
-            fen = input("Please paste the FEN of the position you would like to play from: \n")
-            try:
-                board = chess.Board(fen)
-            except ValueError:
-                print("Invalid FEN. Using starting position instead.")
+    while in_play:
+        try:
+            print("Welcome to the quark bot UI. Press control-C to exit.")
+            user_color = input("Would you like to play as [w]hite or [b]lack?\n")
+            from_pos = input("Would you like to play from an existing position? [y/n]\n")
+            board = chess.Board()
+            if from_pos.lower() == "y":
+                fen = input(
+                    "Please paste the FEN of the position you would like to play from: \n"
+                )
+                try:
+                    board = chess.Board(fen)
+                except ValueError:
+                    print("Invalid FEN. Using starting position instead.")
 
-        if user_color.lower() == "w":
-            game = Game(board, user, bot)
-        else:
-            game = Game(board, bot, user)
+            if user_color.lower() == "w":
+                game = Game(board, user, bot)
+            else:
+                game = Game(board, bot, user)
 
-        game.play()
+            game.play()
 
-    except KeyboardInterrupt:
-        print("Thanks for playing!\n")
+            again = input("Play again? [y/n]\n")
+            if again.lower() != "y":
+                in_play = False
+
+        except KeyboardInterrupt:
+            in_play = False
+    
+    print('Thanks for playing!')
