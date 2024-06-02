@@ -1,6 +1,7 @@
+import argparse
 import chess
 from chess import InvalidMoveError, IllegalMoveError, AmbiguousMoveError
-from config import fen_to_icon, DEPTH
+from config import fen_to_icon, DEFAULT_DEPTH
 from search import next_move
 from dataclasses import dataclass
 
@@ -35,10 +36,17 @@ class Game:
     Object representing a chess game
     """
 
-    def __init__(self, board: chess.Board, white_player: Player, black_player: Player):
+    def __init__(
+        self,
+        board: chess.Board,
+        white_player: Player,
+        black_player: Player,
+        depth: int = DEFAULT_DEPTH,
+    ):
         self.board = board
         self.white_player = white_player
         self.black_player = black_player
+        self.depth = depth
 
     def display_board(self) -> None:
         """
@@ -52,7 +60,7 @@ class Game:
                 display[i] = icon
         if self.board.turn == chess.BLACK:
             display.reverse()
-        display_str = "".join(display)
+        display_str = "\n" + "".join(display) + "\n"
         print(display_str)
 
     def play(self) -> None:
@@ -66,7 +74,7 @@ class Game:
                 player = self.black_player
 
             if player.is_bot:
-                move = next_move(self.board, DEPTH, debug=False)
+                move = next_move(self.board, self.depth, debug=False)
                 san = board.san(move)
                 board.push(move)
                 print(f"Quark played the move {san}.")
@@ -109,6 +117,12 @@ class Game:
 
 if __name__ == "__main__":
 
+    # get engine depth
+    parser = argparse.ArgumentParser(description="Get desired engine depth")
+    parser.add_argument("-d", "--depth", type=int)
+    args = parser.parse_args()
+    depth = args.depth if args.depth else DEFAULT_DEPTH
+
     user, bot = Player("User", False), Player("Quark", True)
     in_play = True
 
@@ -116,7 +130,9 @@ if __name__ == "__main__":
         try:
             print("Welcome to the quark bot UI. Press control-C to exit.")
             user_color = input("Would you like to play as [w]hite or [b]lack?\n")
-            from_pos = input("Would you like to play from an existing position? [y/n]\n")
+            from_pos = input(
+                "Would you like to play from an existing position? [y/n]\n"
+            )
             board = chess.Board()
             if from_pos.lower() == "y":
                 fen = input(
@@ -128,9 +144,9 @@ if __name__ == "__main__":
                     print("Invalid FEN. Using starting position instead.")
 
             if user_color.lower() == "w":
-                game = Game(board, user, bot)
+                game = Game(board, user, bot, depth)
             else:
-                game = Game(board, bot, user)
+                game = Game(board, bot, user, depth)
 
             game.play()
 
@@ -140,5 +156,5 @@ if __name__ == "__main__":
 
         except KeyboardInterrupt:
             in_play = False
-    
-    print('Thanks for playing!')
+
+    print("Thanks for playing!")

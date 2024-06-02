@@ -5,7 +5,6 @@ from typing import List, Literal
 from config import piece_type_to_value_mg, MATE_EVAL
 
 
-
 def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
     """
     Parameters:
@@ -71,7 +70,7 @@ def negamax(
                 return -color * MATE_EVAL
         else:
             return 0
-    
+
     if depth == 0:
         return color * evaluate(board)
 
@@ -88,7 +87,7 @@ def negamax(
 
 def sort_moves(board: chess.Board) -> List[chess.Move]:
     """
-    Sort all the legal moves given the current board. 
+    Sort all the legal moves given the current board.
     Captures > non-captures.
     To sort the captures, we use the Most Valuable Victim - Least Valuable Aggressor (MVV-LVA) heuristic.
     """
@@ -115,5 +114,8 @@ def mvv_lva(board: chess.Board, move: chess.Move) -> int:
         return 0
     aggressor = board.piece_at(move.from_square)
     victim = board.piece_at(move.to_square)
-    val = piece_type_to_value_mg[victim.piece_type] - piece_type_to_value_mg[aggressor.piece_type]
+    val = (
+        piece_type_to_value_mg[victim.piece_type]
+        - piece_type_to_value_mg[aggressor.piece_type]
+    )
     return val
