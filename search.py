@@ -1,8 +1,9 @@
 import chess
 import time
 from evaluation import evaluate
-from typing import Literal
-from config import MATE_EVAL
+from typing import List, Literal
+from config import piece_type_to_value_mg, MATE_EVAL
+
 
 
 def next_move(board: chess.Board, depth: int, debug=True) -> chess.Move:
@@ -35,8 +36,7 @@ def negamax_root(
     Root function for negamax algorithm
     """
     optimal_value = -float("inf")
-    legal_moves = board.legal_moves
-    for move in legal_moves:
+    for move in sort_moves(board):
         board.push(move)
         value = -negamax(board, depth - 1, -beta, -alpha, -color)
         board.pop()
@@ -76,12 +76,44 @@ def negamax(
         return color * evaluate(board)
 
     value = -float("inf")
-    for move in board.legal_moves:
+    for move in sort_moves(board):
         board.push(move)
         value = max(value, -negamax(board, depth - 1, -beta, -alpha, -color))
         alpha = max(alpha, value)
         board.pop()
         if alpha >= beta:
-            return value
-
+            break
     return value
+
+
+def sort_moves(board: chess.Board) -> List[chess.Move]:
+    """
+    Sort all the legal moves given the current board. 
+    Captures > non-captures.
+    To sort the captures, we use the Most Valuable Victim - Least Valuable Aggressor (MVV-LVA) heuristic.
+    """
+    captures, non_captures = [], []
+
+    for move in board.legal_moves:
+        if board.is_capture(move):
+            captures.append(move)
+        else:
+            non_captures.append(move)
+
+    if captures:
+        captures = sorted(captures, key=lambda x: mvv_lva(board, x), reverse=True)
+
+    return captures + non_captures
+
+
+def mvv_lva(board: chess.Board, move: chess.Move) -> int:
+    """
+    calculate the value of a capture using MVV-LVA
+    the higher the value, the better
+    """
+    if board.is_en_passant(move):
+        return 0
+    aggressor = board.piece_at(move.from_square)
+    victim = board.piece_at(move.to_square)
+    val = piece_type_to_value_mg[victim.piece_type] - piece_type_to_value_mg[aggressor.piece_type]
+    return val

@@ -1,7 +1,7 @@
 import chess
 
 # Engine depth
-DEPTH = 3
+DEPTH = 4
 
 # Material value - middlegame
 piece_type_to_value_mg = {
